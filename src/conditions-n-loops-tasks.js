@@ -63,8 +63,12 @@ function getMaxNumber(a, b, c) {
  * {x: 1, y: 1}, {x: 2, y: 8} => false
  * {x: 1, y: 1}, {x: 2, y: 8} => false
  */
-function canQueenCaptureKing(/* queen, king */) {
-  throw new Error('Not implemented');
+function canQueenCaptureKing(queen, king) {
+  return (
+    queen.x === king.x ||
+    queen.y === king.y ||
+    Math.abs(queen.x - king.x) === Math.abs(queen.y - king.y)
+  );
 }
 
 /**
@@ -339,8 +343,34 @@ function rotateMatrix(/* matrix */) {
  *  [2, 9, 5, 9]    => [2, 5, 9, 9]
  *  [-2, 9, 5, -3]  => [-3, -2, 5, 9]
  */
-function sortByAsc(/* arr */) {
-  throw new Error('Not implemented');
+function sortByAsc(arr) {
+  const array = arr;
+  function quickSort(l, r) {
+    if (l >= r) {
+      return;
+    }
+    const pt = Math.floor((l + r) / 2);
+    const pivot = array[pt];
+    let l1 = l;
+    let r1 = r;
+    while (l1 <= r1) {
+      if (array[l1] < pivot) {
+        l1 += 1;
+      } else if (pivot < array[r1]) {
+        r1 -= 1;
+      } else {
+        const t = array[l1];
+        array[l1] = array[r1];
+        array[r1] = t;
+        l1 += 1;
+        r1 -= 1;
+      }
+    }
+    quickSort(l, r1);
+    quickSort(l1, r);
+  }
+  quickSort(0, arr.length - 1);
+  return arr;
 }
 
 /**
@@ -360,8 +390,31 @@ function sortByAsc(/* arr */) {
  *  '012345', 3 => '024135' => '043215' => '031425'
  *  'qwerty', 3 => 'qetwry' => 'qtrewy' => 'qrwtey'
  */
-function shuffleChar(/* str, iterations */) {
-  throw new Error('Not implemented');
+function shuffleChar(str, iterations) {
+  const perm = [];
+  const len = str.length;
+  for (let i = 0; i < len; i += 1) {
+    perm[i] = i;
+  }
+  const A = Math.floor(len / 2);
+  for (let i = 0; i < iterations; i += 1) {
+    for (let j = 0; j < len; j += 1) {
+      const k = Math.floor(perm[j] / 2);
+      if (perm[j] % 2 === 0) perm[j] = k;
+      else perm[j] = A + k;
+    }
+  }
+
+  const chars = [];
+  chars[len - 1] = 0;
+  for (let i = 0; i < len; i += 1) {
+    chars[perm[i]] = str[i];
+  }
+  let result = '';
+  for (let i = 0; i < len; i += 1) {
+    result += chars[i];
+  }
+  return result;
 }
 
 /**
@@ -381,8 +434,33 @@ function shuffleChar(/* str, iterations */) {
  * @param {number} number The source number
  * @returns {number} The nearest larger number, or original number if none exists.
  */
-function getNearestBigger(/* number */) {
-  throw new Error('Not implemented');
+function getNearestBigger(number) {
+  const str = String(number);
+  const digits = new Array(10).fill(0);
+  digits[Number(str[str.length - 1])] = 1;
+  for (let i = str.length - 2; i > 0; i -= 1) {
+    const current = Number(str[i]);
+    const next = Number(str[i + 1]);
+    digits[current] += 1;
+    if (current < next) {
+      let result = '';
+      for (let j = 0; j < i; j += 1) result += str[j];
+      for (let j = current + 1; j < 10; j += 1) {
+        if (digits[j] > 0) {
+          result += j;
+          digits[j] -= 1;
+          break;
+        }
+      }
+      for (let j = 0; j < 10; j += 1) {
+        for (let k = digits[j]; k > 0; k -= 1) {
+          result += j;
+        }
+      }
+      return Number(result);
+    }
+  }
+  return number;
 }
 
 module.exports = {
