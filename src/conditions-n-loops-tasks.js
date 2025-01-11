@@ -107,8 +107,33 @@ function isIsoscelesTriangle(/* a, b, c */) {
  *  10  => X
  *  26  => XXVI
  */
-function convertToRomanNumerals(/* num */) {
-  throw new Error('Not implemented');
+function convertToRomanNumerals(num) {
+  const ROMENUMBERS = [
+    'I',
+    'II',
+    'III',
+    'IV',
+    'V',
+    'VI',
+    'VII',
+    'VIII',
+    'IX',
+    'X',
+  ];
+  let str = '';
+  str += num;
+  let result = '';
+  if (num > 0 && num <= 10) {
+    result = ROMENUMBERS[num - 1];
+  }
+  if (num > 10) {
+    for (let i = 0; i < Number(str[0]); i += 1) {
+      result += ROMENUMBERS[ROMENUMBERS.length - 1];
+    }
+    result += ROMENUMBERS[str[1] - 1];
+  }
+
+  return result;
 }
 
 /**
@@ -245,8 +270,13 @@ function isPalindrome(str) {
  *  'qwerty', 'Q'     => -1
  *  'qwerty', 'p'     => -1
  */
-function getIndexOf(/* str, letter */) {
-  throw new Error('Not implemented');
+function getIndexOf(str, letter) {
+  for (let i = 0; i < str.length; i += 1) {
+    if (str[i] === letter) {
+      return i;
+    }
+  }
+  return -1;
 }
 
 /**
@@ -264,8 +294,15 @@ function getIndexOf(/* str, letter */) {
  *  12345, 0    => false
  *  12345, 6    => false
  */
-function isContainNumber(/* num, digit */) {
-  throw new Error('Not implemented');
+function isContainNumber(num, digit) {
+  let str = '';
+  str += num;
+  for (let i = 0; i < str.length; i += 1) {
+    if (Number(str[i]) === digit) {
+      return true;
+    }
+  }
+  return false;
 }
 
 /**
@@ -281,8 +318,8 @@ function isContainNumber(/* num, digit */) {
  *  [2, 3, 9, 5] => 2       => 2 + 3 === 5 then balance element is 9 and its index = 2
  *  [1, 2, 3, 4, 5] => -1   => no balance element
  */
-function getBalanceIndex(/* arr */) {
-  throw new Error('Not implemented');
+function getBalanceIndex(arr) {
+  return arr;
 }
 
 /**
@@ -306,8 +343,24 @@ function getBalanceIndex(/* arr */) {
  *          [10, 9,  8,  7]
  *        ]
  */
-function getSpiralMatrix(/* size */) {
-  throw new Error('Not implemented');
+function getSpiralMatrix(size) {
+  const matrix = [];
+  for (let i = 0; i < size; i += 1) {
+    for (let j = 0; j < size; j += 1) {
+      matrix[i] = new Array(size).fill(0);
+    }
+  }
+  for (let i = 0; i < size; i += 1) {
+    for (let j = 0; j < size; j += 1) {
+      if (i === 0 || j === size - 1 || j === 0) {
+        matrix[i][j] = i + 1 + j;
+      }
+      if (i === size - 1 && j < size - 1) {
+        matrix[i][j] = size * i - (size - 1) - j;
+      }
+    }
+  }
+  return matrix;
 }
 
 /**
@@ -325,8 +378,22 @@ function getSpiralMatrix(/* size */) {
  *    [7, 8, 9]         [9, 6, 3]
  *  ]                 ]
  */
-function rotateMatrix(/* matrix */) {
-  throw new Error('Not implemented');
+function rotateMatrix(matrix) {
+  const len = matrix.length;
+  const result = [];
+  for (let i = 0; i < len; i += 1) {
+    for (let j = 0; j < len; j += 1) {
+      if (i === 0) result[j] = [];
+      result[j][len - 1 - i] = matrix[i][j];
+    }
+  }
+  const matrixCopy = matrix;
+  for (let i = 0; i < len; i += 1) {
+    for (let j = 0; j < len; j += 1) {
+      matrixCopy[i][j] = result[i][j];
+    }
+  }
+  return matrix;
 }
 
 /**
